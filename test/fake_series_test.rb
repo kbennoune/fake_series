@@ -43,6 +43,15 @@ class FakeSeriesTest < Minitest::Test
   end
 
   def test_each_member_of_series
+    time = Time.now
+    series = FakeSeries.new(24 * 60, Time.now, 1.minute, 1, 2, 3, 4)
+    elts = []
 
+    series.each do |elt|
+      elts << elt.time
+    end
+
+    assert elts[0].to_i == time.to_i
+    assert elts[-1].to_i == (time + 1.day - 1.minute).to_i
   end
 end

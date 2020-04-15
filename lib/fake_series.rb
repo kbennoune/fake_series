@@ -28,13 +28,15 @@ class FakeSeries
   end
 
   def each
-    prev = Element.new(
-      time, {}, generator
-    )
-
     i = 0
     while i < steps
-      prev = Element.from(prev, duration)
+      if i == 0
+        prev = Element.new(
+          time, {}, generator
+        )
+      else
+        prev = Element.from(prev, duration)
+      end
 
       yield prev
       i += 1
