@@ -11,12 +11,12 @@ class FakeSeriesTest < Minitest::Test
       max: 25.0
     )
 
-    previous_val = FakeSeries.new(
+    previous_val = FakeSeries::Element.new(
       Time.now - 1.year,
       {phase: 0},
       configuration
     )
-    val = FakeSeries.from(previous_val, 1.minute)
+    val = FakeSeries::Element.from(previous_val, 1.minute)
 
     val.value 
 
@@ -40,5 +40,9 @@ class FakeSeriesTest < Minitest::Test
     (array.length - 1).times.each do |i| 
       assert_in_delta(2, array[i], array[i + 1])
     end
+  end
+
+  def test_each_member_of_series
+
   end
 end
