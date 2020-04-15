@@ -20,11 +20,16 @@ class FakeSeries
   # duration - The time length of each step
   # *args - args to be passed to the generator
   #
-  def initialize(steps, time, duration, *args)
+  def initialize(steps, time, duration)
     @steps = steps
     @time = time
     @duration = duration
+  end
+
+  def random_cyclic(*args)
     @generator = Generators::RandomCyclic.from_args(*args)
+    
+    self
   end
 
   def each
@@ -63,8 +68,7 @@ class FakeSeries
     # be between 25 and 45 with an additional random osciallation
     # of 20.
     def array(steps, time, duration, *args)
-      # generator = Generators::RandomCyclic.from_args(*args)
-      self.new(steps, time, duration, *args).values
+      self.new(steps, time, duration).random_cyclic(*args).values
     end
   end
 

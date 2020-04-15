@@ -34,6 +34,8 @@ module FakeSeries::Generators
         phase: next_phase(previous_hidden_variables[:phase] || 0)
       }
     end
+
+    private
   
     def random_variation(current_phase)
       amplitude * Math.cos(current_phase)

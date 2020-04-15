@@ -25,6 +25,14 @@ class FakeSeriesTest < Minitest::Test
   end
 
   def test_creates_a_time_series_for_a_day
+    last_year = Time.now - 1.year
+    series = FakeSeries.new(24 * 60, last_year, 1.minute)
+    series.random_cyclic(0.177, 2, 18.0, 25.0)
+    times = series.map(&:time)
+    assert times[0].to_i == last_year.to_i
+  end
+
+  def test_creates_a_time_series_array_for_a_day
     array = FakeSeries.array(24 * 60, Time.now - 1.year, 1.minute, 0.177, 2, 18.0, 25.0)
     assert array.length == (24 * 60)
   end
@@ -33,6 +41,7 @@ class FakeSeriesTest < Minitest::Test
     array = FakeSeries.array(365 * 3, Time.now - 1.year, 8.hours, 0.177, 2, 18.0, 25.0)
     assert array.length == (365 * 3)
   end
+  
 
   def test_creates_a_large_series
     array = FakeSeries.array(24 * 60 * 3, Time.now - 1.year, 1.minute, 0.077, 2, 18.0, 25.0)
@@ -44,7 +53,7 @@ class FakeSeriesTest < Minitest::Test
 
   def test_each_member_of_series
     time = Time.now
-    series = FakeSeries.new(24 * 60, Time.now, 1.minute, 1, 2, 3, 4)
+    series = FakeSeries.new(24 * 60, Time.now, 1.minute).random_cyclic(1, 2, 3, 4)
     elts = []
 
     series.each do |elt|
