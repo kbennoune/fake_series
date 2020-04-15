@@ -26,8 +26,8 @@ class FakeSeries
     @duration = duration
   end
 
-  def random_cyclic(*args)
-    @generator = Generators::RandomCyclic.from_args(*args)
+  def random_cyclic(**args)
+    @generator = Generators::RandomCyclic.new(**args)
     
     self
   end
@@ -37,10 +37,10 @@ class FakeSeries
     while i < steps
       if i == 0
         prev = Element.new(
-          time, {}, generator
+          time, nil, generator
         )
       else
-        prev = Element.from(prev, duration)
+        prev = prev.next(duration)
       end
 
       yield prev
@@ -67,8 +67,8 @@ class FakeSeries
     # will create 300 values over 100 days. The base values will
     # be between 25 and 45 with an additional random osciallation
     # of 20.
-    def array(steps, time, duration, *args)
-      self.new(steps, time, duration).random_cyclic(*args).values
+    def array(steps, time, duration, **args)
+      self.new(steps, time, duration).random_cyclic(**args).values
     end
   end
 

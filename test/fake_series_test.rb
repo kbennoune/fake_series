@@ -13,10 +13,10 @@ class FakeSeriesTest < Minitest::Test
 
     previous_val = FakeSeries::Element.new(
       Time.now - 1.year,
-      {phase: 0},
+      nil,
       configuration
     )
-    val = FakeSeries::Element.from(previous_val, 1.minute)
+    val = previous_val.next(1.minute)
 
     val.value 
 
@@ -24,43 +24,21 @@ class FakeSeriesTest < Minitest::Test
     assert_in_delta(21.5, val.value, 5.5)
   end
 
-  def test_creates_a_time_series_for_a_day
-    last_year = Time.now - 1.year
-    series = FakeSeries.new(24 * 60, last_year, 1.minute)
-    series.random_cyclic(0.177, 2, 18.0, 25.0)
-    times = series.map(&:time)
-    assert times[0].to_i == last_year.to_i
-  end
-
   def test_creates_a_time_series_array_for_a_day
-    array = FakeSeries.array(24 * 60, Time.now - 1.year, 1.minute, 0.177, 2, 18.0, 25.0)
+    array = FakeSeries.array(24 * 60, Time.now - 1.year, 1.minute, frequency: 0.177, amplitude: 2, min: 18.0, max: 25.0)
     assert array.length == (24 * 60)
   end
 
   def test_creates_a_time_series_for_a_year
-    array = FakeSeries.array(365 * 3, Time.now - 1.year, 8.hours, 0.177, 2, 18.0, 25.0)
+    array = FakeSeries.array(365 * 3, Time.now - 1.year, 8.hours, frequency: 0.177, amplitude: 2, min: 18.0, max: 25.0)
     assert array.length == (365 * 3)
   end
   
-
   def test_creates_a_large_series
-    array = FakeSeries.array(24 * 60 * 3, Time.now - 1.year, 1.minute, 0.077, 2, 18.0, 25.0)
+    array = FakeSeries.array(24 * 60 * 3, Time.now - 1.year, 1.minute, frequency: 0.077, amplitude: 2, min: 18.0, max: 25.0)
 
     (array.length - 1).times.each do |i| 
       assert_in_delta(2, array[i], array[i + 1])
     end
-  end
-
-  def test_each_member_of_series
-    time = Time.now
-    series = FakeSeries.new(24 * 60, Time.now, 1.minute).random_cyclic(1, 2, 3, 4)
-    elts = []
-
-    series.each do |elt|
-      elts << elt.time
-    end
-
-    assert elts[0].to_i == time.to_i
-    assert elts[-1].to_i == (time + 1.day - 1.minute).to_i
   end
 end
