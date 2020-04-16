@@ -10,12 +10,6 @@ module FakeSeries::Generators
       @step_size = step_size
     end
 
-    class << self
-      def from_args(frequency, amplitude, min, max)  
-        new(frequency: frequency, amplitude: amplitude, min: min, max: max)
-      end
-    end
-
     def value(elt)
       if elt.hidden_variables[:last_value]
         elt.hidden_variables[:last_value] + step_size * random_change
