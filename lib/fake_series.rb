@@ -74,6 +74,10 @@ class FakeSeries
     def array(steps, time, duration, **args)
       self.new(steps, time, duration).random_cyclic(**args).values
     end
+
+    def types
+      GENERATORS.keys
+    end
   end
 
   private

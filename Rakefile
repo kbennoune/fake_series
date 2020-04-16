@@ -1,5 +1,6 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
+import "lib/tasks/series.rake"
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
