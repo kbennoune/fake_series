@@ -13,6 +13,11 @@ class FakeSeries
 
   attr_reader :generator, :time, :steps, :duration
 
+  GENERATORS = {
+    random_cyclic: Generators::RandomCyclic,
+    simple_random_walk: Generators::SimpleRandomWalk
+  }
+
   # Initializes the series
   # 
   # steps - The number of steps in the series
@@ -39,16 +44,10 @@ class FakeSeries
 
   def each
     i = 0
-    while i < steps
-      if i == 0
-        prev = Element.new(
-          time, nil, generator
-        )
-      else
-        prev = prev.next(duration)
-      end
 
-      yield prev
+    while i < steps
+      elt = next_element(elt, i)
+      yield elt
       i += 1
     end
   end
@@ -77,5 +76,15 @@ class FakeSeries
     end
   end
 
+  private
 
+  def next_element(last_elt, step)
+    if step == 0
+      Element.new(
+        time, nil, generator
+      )
+    else
+      last_elt.next(duration)
+    end
+  end
 end
