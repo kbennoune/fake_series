@@ -4,6 +4,13 @@ module Generators
   class RandomCyclicTest < Minitest::Test
     using FakeSeries::TimeHelpers
 
+    def test_method_is_defined_on_fake_series
+      series = FakeSeries.new(1, Time.new, 1.minute)
+
+      assert series.respond_to?(:random_cyclic)
+      assert series.methods.include?(:random_cyclic)
+    end
+
     def test_creates_a_time_series_for_a_day
       last_year = Time.now - 1.year
       series = FakeSeries.new(24 * 60, last_year, 1.minute)
