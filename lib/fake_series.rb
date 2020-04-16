@@ -26,10 +26,15 @@ class FakeSeries
     @duration = duration
   end
 
-  def random_cyclic(**args)
-    @generator = Generators::RandomCyclic.new(**args)
-    
-    self
+  # Defines methods for each of the generators
+  # to set the generator for iteration
+  #
+  GENERATORS.each do |name, klass|
+    define_method(name) do |**args|
+      @generator = klass.new(**args)
+
+      self
+    end
   end
 
   def each
