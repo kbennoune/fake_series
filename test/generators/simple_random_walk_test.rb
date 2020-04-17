@@ -14,7 +14,7 @@ module Generators
     def test_a_simple_random_walk
       last_year = Time.now
 
-      series = FakeSeries.new(150 * 24 * 60, last_year, 1.minute)
+      series = FakeSeries.new(1 * 24 * 60, last_year, 1.minute)
 
       data = series.simple_random_walk(initial: 10, step_size: 1).to_a
 

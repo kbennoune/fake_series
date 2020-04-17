@@ -2,7 +2,6 @@ require "fake_series/time_helpers"
 
 module FakeSeries::Generators
   class SimpleRandomWalk
-    using FakeSeries::TimeHelpers
     attr_reader :initial, :step_size
 
     def initialize(initial:, step_size:)

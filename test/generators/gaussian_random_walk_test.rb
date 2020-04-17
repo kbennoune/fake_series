@@ -18,9 +18,11 @@ module Generators
     end
 
     def test_a_gaussian_random_walk
-      series = FakeSeries.new(4 * 24 * 60, Time.now, 1.minute)
+      last_year = Time.now - 1.day
 
-      data = series.gaussian_random_walk(initial: 0, std_deviation: 10).to_a
+      series = FakeSeries.new(4 * 24 * 60, last_year, 1.minute)
+
+      data = series.gaussian_random_walk(initial: 10, std_deviation: 10).to_a
 
       sum_of_differences = data.each_with_index.sum do |elt, i|
         i.zero? ? 0 : (elt.value - data[i-1].value) ** 2
