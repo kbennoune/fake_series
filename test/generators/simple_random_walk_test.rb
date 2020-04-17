@@ -16,7 +16,7 @@ module Generators
 
       series = FakeSeries.new(1 * 24 * 60, last_year, 1.minute)
 
-      data = series.simple_random_walk(initial: 10, step_size: 1).to_a
+      data = series.simple_random_walk(initial: 10, amplitude: 1).to_a
 
       data.each_with_index do |elt, i|
         if i == 0
