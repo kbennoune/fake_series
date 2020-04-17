@@ -15,7 +15,8 @@ class FakeSeries
 
   GENERATORS = {
     random_cyclic: Generators::RandomCyclic,
-    simple_random_walk: Generators::SimpleRandomWalk
+    simple_random_walk: Generators::SimpleRandomWalk,
+    gaussian_random_walk: Generators::GaussianRandomWalk
   }
 
   # Initializes the series

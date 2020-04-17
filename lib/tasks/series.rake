@@ -24,7 +24,7 @@ namespace :series do
 
       File.open(filename, "w") do |file|
         FakeSeries.new(steps, time, duration).send(series, **series_args).each do |elt|
-          file.puts [elt.time, elt.value].join("\t")
+          file.puts [elt.time.strftime("%D %H:%M:%S"), elt.value].join("\t")
         end
       end
 
