@@ -29,7 +29,7 @@ module Generators
       end
 
       sigma = Math.sqrt(sum_of_differences / (data.length - 1))
-      assert_in_delta(sigma, 10, 0.1)
+      assert_in_delta(sigma, 10, 0.2)
     end
   end
 end

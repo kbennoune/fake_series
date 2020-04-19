@@ -17,13 +17,12 @@ module Generators
       series = FakeSeries.new(1 * 24 * 60, last_year, 1.minute)
 
       data = series.simple_random_walk(initial: 10, amplitude: 1).to_a
-
       data.each_with_index do |elt, i|
         if i == 0
           assert elt.value == 10
         else
           step_difference = data[i-1].value - elt.value
-          assert step_difference.abs == 1
+          assert_equal step_difference.abs, 1
         end
       end
     end

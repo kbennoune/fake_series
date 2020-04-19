@@ -41,4 +41,33 @@ class FakeSeriesTest < Minitest::Test
       assert_in_delta(2, array[i], array[i + 1])
     end
   end
+
+  def test_in_batches
+    batches = []
+    batch_iterators = []
+    i = 0
+    now = Time.now
+    series = FakeSeries.new(250, now, 1.minute)
+    data_builder = series.simple_random_walk(initial: 10, amplitude: 1)
+    data_builder.in_batches_of(120) do |elt|
+      i += 1
+      { time: elt.time, value: elt.value, i: i }
+    end.each do |batch|
+      batch_iterators << i
+      batches << batch
+    end
+
+    assert batches.size == 3
+    assert batches[0].size == 120
+    assert batches[1].size == 120
+    assert batches[2].size == 10
+
+    assert batch_iterators[0] == 120
+    assert batch_iterators[1] == 240
+    assert batch_iterators[2] == 250
+
+    assert batches[0][0][:time] == now
+    assert batches[0][0][:value] == 10
+    assert_in_delta(batches[2][9][:time].to_i, (now + 249.minutes).to_i, 1)
+  end
 end

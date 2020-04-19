@@ -28,7 +28,7 @@ class FakeSeries
   # *args - args to be passed to the generator
   #
   def initialize(steps, time, duration)
-    @steps = steps
+    @steps = steps.to_i
     @time = time
     @duration = duration
   end
@@ -45,13 +45,54 @@ class FakeSeries
   end
 
   def each
-    i = 0
+    elements = enumerator.take(steps)
 
-    while i < steps
-      elt = next_element(elt, i)
-      yield elt
-      i += 1
+    if block_given?
+      elements.each{ |elt| yield elt }
+    else
+      elements
     end
+  end
+
+  # Maps in batches of size n
+  # The block passed will be used in the
+  # a map over the elements. The result
+  # is an enumerator which yields each batch.
+  #
+  def in_batches_of(size, &blk)
+    size = size.to_i
+    batches = (steps / size) + ((steps % size).zero? ? 0 : 1)
+
+    Enumerator.new do |yielder|
+      i = 0
+      elements = self.each
+
+      while i < batches
+        batch = size.times.inject([]) do |acc, _|
+          begin
+            acc << blk.call(elements.next)
+          rescue StopIteration
+            break acc
+          end
+        end
+
+        yielder.yield batch
+        i += 1
+      end
+    end.lazy
+  end
+
+  def enumerator
+    Enumerator.new do |yielder|
+      i = 0
+      elt = nil
+
+      loop do
+        elt = next_element(elt, i)
+        yielder << elt
+        i += 1
+      end
+    end.lazy
   end
 
   def values
