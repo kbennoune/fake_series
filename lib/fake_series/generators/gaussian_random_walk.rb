@@ -3,19 +3,14 @@ require "fake_series/time_helpers"
 module FakeSeries::Generators
   class GaussianRandomWalk
     using FakeSeries::TimeHelpers
-    attr_reader :initial, :std_deviation
+    attr_reader :std_deviation
 
-    def initialize(initial:, std_deviation:)
-      @initial = initial.to_f
+    def initialize(std_deviation:)
       @std_deviation = std_deviation.to_f
     end
 
-    def value(elt)
-      if elt.hidden_variables[:last_value]
-        elt.hidden_variables[:last_value] + std_deviation * random_change
-      else
-        initial
-      end
+    def value(prev, elt)
+      prev.value + std_deviation * random_change
     end
 
     def random_change
@@ -35,12 +30,8 @@ module FakeSeries::Generators
       x * Math.sqrt(-2 * Math.log(sum_squares) / sum_squares)
     end
 
-    def hidden_variables(previous)
-      if previous
-        {last_value: previous.value}
-      else
-        {last_value: nil}
-      end
+    def hidden_variables(_previous)
+      {}
     end
   end
 end

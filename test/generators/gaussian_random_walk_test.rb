@@ -5,7 +5,7 @@ module Generators
     using FakeSeries::TimeHelpers
 
     def test_random_gaussian_distribution
-      generator = FakeSeries::Generators::GaussianRandomWalk.new(initial: 0, std_deviation: 1)
+      generator = FakeSeries::Generators::GaussianRandomWalk.new(std_deviation: 1)
 
       data = 1000.times.map{
         generator.random_normal
@@ -22,7 +22,7 @@ module Generators
 
       series = FakeSeries.new(4 * 24 * 60, last_year, 1.minute)
 
-      data = series.gaussian_random_walk(initial: 10, std_deviation: 10).to_a
+      data = series.gaussian_random_walk(std_deviation: 10).to_a
 
       sum_of_differences = data.each_with_index.sum do |elt, i|
         i.zero? ? 0 : (elt.value - data[i-1].value) ** 2

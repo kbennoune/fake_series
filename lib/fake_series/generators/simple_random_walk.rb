@@ -2,19 +2,14 @@ require "fake_series/time_helpers"
 
 module FakeSeries::Generators
   class SimpleRandomWalk
-    attr_reader :initial, :amplitude
+    attr_reader :amplitude
 
-    def initialize(initial:, amplitude:)
-      @initial = initial
+    def initialize(amplitude:)
       @amplitude = amplitude
     end
 
-    def value(elt)
-      if elt.hidden_variables[:last_value]
-        elt.hidden_variables[:last_value] + amplitude * random_change
-      else
-        initial
-      end
+    def value(prev, elt)
+      prev.value + amplitude * random_change
     end
 
     def random_change
@@ -22,11 +17,7 @@ module FakeSeries::Generators
     end
 
     def hidden_variables(previous)
-      if previous
-        {last_value: previous.value}
-      else
-        {last_value: nil}
-      end
+      {}
     end
   end
 end

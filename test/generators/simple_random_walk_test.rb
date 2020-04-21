@@ -14,9 +14,9 @@ module Generators
     def test_a_simple_random_walk
       last_year = Time.now
 
-      series = FakeSeries.new(1 * 24 * 60, last_year, 1.minute)
+      series = FakeSeries.new(1 * 24 * 60, last_year, 1.minute, 10)
 
-      data = series.simple_random_walk(initial: 10, amplitude: 1).to_a
+      data = series.simple_random_walk(amplitude: 1).to_a
       data.each_with_index do |elt, i|
         if i == 0
           assert elt.value == 10

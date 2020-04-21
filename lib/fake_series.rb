@@ -11,7 +11,7 @@ require "forwardable"
 class FakeSeries
   include Enumerable
 
-  attr_reader :generator, :time, :steps, :duration
+  attr_reader :generator, :time, :steps, :duration, :initial
 
   GENERATORS = {
     random_cyclic: Generators::RandomCyclic,
@@ -27,10 +27,11 @@ class FakeSeries
   # duration - The time length of each step
   # *args - args to be passed to the generator
   #
-  def initialize(steps, time, duration)
+  def initialize(steps, time, duration, initial = 0)
     @steps = steps.to_i
     @time = time
     @duration = duration
+    @initial = initial
   end
 
   # Defines methods for each of the generators
@@ -85,11 +86,11 @@ class FakeSeries
   def enumerator
     Enumerator.new do |yielder|
       i = 0
-      elt = nil
-
+      elt = first_element
       loop do
-        elt = next_element(elt, i)
         yielder << elt
+
+        elt = next_element(elt)
         i += 1
       end
     end.lazy
@@ -125,13 +126,14 @@ class FakeSeries
 
   private
 
-  def next_element(last_elt, step)
-    if step == 0
-      Element.new(
-        time, nil, generator
-      )
-    else
-      last_elt.next(duration)
-    end
+  def first_element
+    Element.new(
+      time, generator, {}, value: initial
+    )
   end
+
+  def next_element(last_elt)
+    last_elt.next(duration)
+  end
+
 end

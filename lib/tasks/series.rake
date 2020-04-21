@@ -17,13 +17,16 @@ namespace :series do
       time = Time.parse(opts[:time])
       steps = opts[:steps]
       duration = opts[:duration]
+      initial = opts[:initial] 
 
-      if [filename, series, series_args, steps, time, duration].any?(&:nil?)
+      if [filename, series, series_args, steps, time, duration, initial].any?(&:nil?)
         raise OptionParser::MissingArgument, "there is a missing command line argument"
       end
 
       File.open(filename, "w") do |file|
-        FakeSeries.new(steps, time, duration).send(series, **series_args).each do |elt|
+        fake_series = FakeSeries.new(steps, time, duration, initial)
+
+        fake_series.send(series, **series_args).each do |elt|
           file.puts [elt.time.strftime("%D %H:%M:%S"), elt.value].join("\t")
         end
       end
@@ -38,6 +41,7 @@ def parse_options(additional_flags = {})
     steps: ["-S", Integer],
     time: "-T",
     duration: ["-D", Numeric],
+    initial: ["-I", Numeric],
     # series should be json
     series: "-s"
   }.merge(additional_flags)
