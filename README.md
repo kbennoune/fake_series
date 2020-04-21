@@ -25,8 +25,9 @@ Or install it yourself as:
 number_of_steps = (1.year / 1.minute)
 start_date = (Time.now - number_of_steps.minutes)
 step_length = 1.minute
+initial = 0
 
-series = FakeSeries.new(number_of_steps, start_date, step_length)
+series = FakeSeries.new(number_of_steps, start_date, step_length, initial)
 
 series.simple_random_walk(initial: 0, amplitude: 10).each do |step|
   puts [step.time.strftime("%D %H:%M:%S"), step.value].join("\t")
@@ -39,15 +40,11 @@ The following generators are available
     min: Numeric
     max: Numeric
     peakhour: Numeric(0..23)
-    initial: Numeric
 * simple_random_walk
-    initial: Numeric
     amplitude: Numeric
 * gaussian_random_walk
-    initial: Numeric
     std_deviation: Numeric
 * pink_noise
-    initial: Numeric
     max_scale: Integer (lowest subfrequency added)
     amplitude: Numeric
     offset: Integer (Which subfrequency one is on)

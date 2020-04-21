@@ -3,10 +3,9 @@ require "fake_series/time_helpers"
 class FakeSeries
   module Generators
     class PinkNoise
-      attr_reader :initial, :time_scales, :max_scale, :amplitude, :offset
+      attr_reader :time_scales, :max_scale, :amplitude, :offset
 
-      def initialize(initial:, max_scale:, amplitude:, offset: nil)
-        @initial = initial
+      def initialize(max_scale:, amplitude:, offset: nil)
         @time_scales = 1..max_scale
         @max_scale = max_scale
         @amplitude = amplitude
@@ -14,20 +13,12 @@ class FakeSeries
       end
 
       def hidden_variables(previous)
-        if previous
-          {last_value: previous.value, step: previous.hidden_variables[:step] + 1}
-        else
-          {last_value: nil, step: 0}
-        end
+        {step: previous.hidden_variables[:step].to_i + 1}
       end
 
-      def value(elt)
-        if elt.hidden_variables[:last_value]
-          step_number = elt.hidden_variables[:step]
-          elt.hidden_variables[:last_value] + amplitude * random_changes(step_number)
-        else
-          initial
-        end
+      def value(prev, elt)
+        step_number = elt.hidden_variables[:step]
+        prev.value + amplitude * random_changes(step_number)
       end
 
       def random_changes(step_number)

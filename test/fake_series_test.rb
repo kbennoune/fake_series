@@ -13,13 +13,12 @@ class FakeSeriesTest < Minitest::Test
 
     previous_val = FakeSeries::Element.new(
       Time.now - 1.year,
-      nil,
-      configuration
+      configuration,
+      {},
+      value: 0
     )
     val = previous_val.next(1.minute)
-
-    val.value 
-
+    
     assert val.time == previous_val.time + 1.minute
     assert_in_delta(21.5, val.value, 5.5)
   end
@@ -47,8 +46,8 @@ class FakeSeriesTest < Minitest::Test
     batch_iterators = []
     i = 0
     now = Time.now
-    series = FakeSeries.new(250, now, 1.minute)
-    data_builder = series.simple_random_walk(initial: 10, amplitude: 1)
+    series = FakeSeries.new(250, now, 1.minute, 10)
+    data_builder = series.simple_random_walk(amplitude: 1)
     data_builder.in_batches_of(120) do |elt|
       i += 1
       { time: elt.time, value: elt.value, i: i }

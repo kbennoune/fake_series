@@ -5,7 +5,7 @@ class FakeSeries
     class RandomCyclic
       using FakeSeries::TimeHelpers
 
-      def initialize(frequency:, amplitude:, min:, max:, peakhour: 3, initial: 0)
+      def initialize(frequency:, amplitude:, min:, max:, peakhour: 3)
         @frequency = frequency
         @amplitude = amplitude
         @min = min
@@ -13,20 +13,16 @@ class FakeSeries
         @peakhour = peakhour
       end
 
-      def value(elt)
+      def value(prev, elt)
         current_phase = elt.hidden_variables[:phase]
         time = elt.time
         (base_value(time) + random_variation(current_phase))
       end
 
       def hidden_variables(previous)
-        if previous
-          {
-            phase: next_phase(previous.hidden_variables[:phase] || 0)
-          }
-        else
-          {phase: 0}
-        end
+        {
+          phase: next_phase(previous.hidden_variables[:phase] || 0)
+        }
       end
 
       private
@@ -38,7 +34,7 @@ class FakeSeries
       def random_variation(current_phase)
         amplitude * Math.cos(current_phase)
       end
-    
+
       def next_phase(previous_phase)
         random_phase = SecureRandom.rand(2 * frequency)
         (previous_phase + random_phase) % 2.0

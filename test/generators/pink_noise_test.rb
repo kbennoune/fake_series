@@ -6,7 +6,7 @@ module Generators
 
     def test_pink_noise_series
       series = FakeSeries.new(1 * 24 * 60, Time.now, 1.minute)
-                         .pink_noise(initial: 0, max_scale: 15, amplitude: 1)
+                         .pink_noise(max_scale: 15, amplitude: 1)
 
       data = series.to_a
 
