@@ -13,7 +13,7 @@ class FakeSeries::Element
   end
 
   def next(duration)
-    hidden_variables = generator.hidden_variables(self)
+    hidden_variables = generator.hidden_variables(self, duration)
 
     self.class.new(
       self.time + duration,

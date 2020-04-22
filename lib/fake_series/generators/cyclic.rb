@@ -3,7 +3,9 @@ require "fake_series/time_helpers"
 class FakeSeries
   module Generators
     class Cyclic
+      include FakeSeries::Generators::Composable
       using FakeSeries::TimeHelpers
+      
       attr_reader :period, :amplitude
 
       def initialize(period:, amplitude:)

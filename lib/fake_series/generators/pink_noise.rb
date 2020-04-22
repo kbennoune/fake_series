@@ -3,6 +3,8 @@ require "fake_series/time_helpers"
 class FakeSeries
   module Generators
     class PinkNoise
+      include FakeSeries::Generators::Composable
+
       attr_reader :time_scales, :max_scale, :amplitude, :offset
 
       def initialize(max_scale:, amplitude:, offset: nil)
@@ -12,7 +14,7 @@ class FakeSeries
         @offset = offset || SecureRandom.rand(max_scale)
       end
 
-      def hidden_variables(previous)
+      def hidden_variables(previous, _duration)
         {step: previous.hidden_variables[:step].to_i + 1}
       end
 
