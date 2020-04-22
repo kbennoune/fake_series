@@ -3,6 +3,7 @@ require "fake_series/time_helpers"
 class FakeSeries
   module Generators
     class RandomCyclic
+      include FakeSeries::Generators::Composable
       using FakeSeries::TimeHelpers
 
       def initialize(frequency:, amplitude:, min:, max:, peakhour: 3)
@@ -19,7 +20,7 @@ class FakeSeries
         (base_value(time) + random_variation(current_phase))
       end
 
-      def hidden_variables(previous)
+      def hidden_variables(previous, _duration)
         {
           phase: next_phase(previous.hidden_variables[:phase] || 0)
         }

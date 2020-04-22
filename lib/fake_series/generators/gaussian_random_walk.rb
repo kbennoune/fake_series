@@ -2,7 +2,9 @@ require "fake_series/time_helpers"
 
 module FakeSeries::Generators
   class GaussianRandomWalk
+    include FakeSeries::Generators::Composable
     using FakeSeries::TimeHelpers
+    
     attr_reader :std_deviation
 
     def initialize(std_deviation:)
@@ -30,7 +32,7 @@ module FakeSeries::Generators
       x * Math.sqrt(-2 * Math.log(sum_squares) / sum_squares)
     end
 
-    def hidden_variables(_previous)
+    def hidden_variables(_previous, _duration)
       {}
     end
   end

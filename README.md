@@ -22,6 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
+### Simple Series
 number_of_steps = (1.year / 1.minute)
 start_date = (Time.now - number_of_steps.minutes)
 step_length = 1.minute
@@ -29,13 +30,16 @@ initial = 0
 
 series = FakeSeries.new(number_of_steps, start_date, step_length, initial)
 
-series.simple_random_walk(initial: 0, amplitude: 10).each do |step|
+series.simple_random_walk(amplitude: 10).each do |step|
   puts [step.time.strftime("%D %H:%M:%S"), step.value].join("\t")
 end
 
 The following generators are available
+* cyclic
+    amplitude: Numeric
+    period: Numeric (number of seconds to complete the cycle)
 * random_cyclic 
-    frequency: Numeric 
+    frequency: Numeric
     amplitude: Numeric
     min: Numeric
     max: Numeric
@@ -49,6 +53,30 @@ The following generators are available
     amplitude: Numeric
     offset: Integer (Which subfrequency one is on)
 
+
+### Expressions
+You can create a series that's the sum of two other series
+
+number_of_steps = (1.week / 1.minute)
+start_date = (Time.now - number_of_steps.minutes)
+step_length = 1.minute
+initial = 0
+
+series = FakeSeries.new(number_of_steps, start_date, step_length, initial)
+
+generator = FakeSeries::Generators::PinkNoise.new(
+            max_scale: 25,
+            amplitude: 1
+            ) +
+            FakeSeries::Generators::Cyclic.new(
+            period: 1.day,
+            amplitude: 20
+            )
+
+
+series.with_generator(generator).each do |step|
+  puts [step.time.strftime("%D %H:%M:%S"), step.value].join("\t")
+end
 
 ## Development
 

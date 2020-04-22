@@ -2,6 +2,8 @@ require "fake_series/time_helpers"
 
 module FakeSeries::Generators
   class SimpleRandomWalk
+    include FakeSeries::Generators::Composable
+
     attr_reader :amplitude
 
     def initialize(amplitude:)
@@ -16,7 +18,7 @@ module FakeSeries::Generators
       2 * SecureRandom.rand(2) - 1
     end
 
-    def hidden_variables(previous)
+    def hidden_variables(previous, _duration)
       {}
     end
   end

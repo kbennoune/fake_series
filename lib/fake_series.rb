@@ -14,6 +14,7 @@ class FakeSeries
   attr_reader :generator, :time, :steps, :duration, :initial
 
   GENERATORS = {
+    cyclic: Generators::Cyclic,
     random_cyclic: Generators::RandomCyclic,
     simple_random_walk: Generators::SimpleRandomWalk,
     gaussian_random_walk: Generators::GaussianRandomWalk,
@@ -39,10 +40,14 @@ class FakeSeries
   #
   GENERATORS.each do |name, klass|
     define_method(name) do |**args|
-      @generator = klass.new(**args)
-
-      self
+      with_generator(klass.new(**args))
     end
+  end
+
+  def with_generator(generator)
+    @generator = generator
+
+    self
   end
 
   def each
