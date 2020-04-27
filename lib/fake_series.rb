@@ -1,5 +1,6 @@
 require "fake_series/version"
 require "fake_series/element"
+require 'fake_series_rust_extension'
 require "fake_series/generators"
 require "fake_series/time_helpers"
 require "securerandom"

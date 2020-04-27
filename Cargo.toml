@@ -1,0 +1,14 @@
+[package]
+name = "fake_series"
+version = "0.0.1"
+authors = ["Kamal Bennoune <kbennoune@gmail.com>"]
+
+[lib]
+name = "fake_series_rust_extension"
+crate-type = ["cdylib", "dylib"]
+
+[dependencies]
+rutie = "0.7.0"
+rand = "0.7.3"
+more-asserts = "0.2.1"
+streaming-stats = "0.2.3"

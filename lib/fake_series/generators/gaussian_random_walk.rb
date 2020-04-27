@@ -9,6 +9,7 @@ module FakeSeries::Generators
 
     def initialize(std_deviation:)
       @std_deviation = std_deviation.to_f
+      @random_change_meth = get_random_change_meth
     end
 
     def value(prev, elt)
@@ -16,8 +17,7 @@ module FakeSeries::Generators
     end
 
     def random_change
-      # 2 * SecureRandom.rand(2) - 1
-      random_normal
+      @random_change_meth.call()
     end
 
     def random_normal
@@ -34,6 +34,16 @@ module FakeSeries::Generators
 
     def hidden_variables(_previous, _duration)
       {}
+    end
+
+    private
+
+    def get_random_change_meth
+      if FakeSeriesRustExtension.enabled?
+        FakeSeriesRust.method(:random_normal)
+      else
+        self.method(:random_normal)
+      end
     end
   end
 end
