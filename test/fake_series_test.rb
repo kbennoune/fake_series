@@ -18,7 +18,7 @@ class FakeSeriesTest < Minitest::Test
       value: 0
     )
     val = previous_val.next(1.minute)
-    
+
     assert val.time == previous_val.time + 1.minute
     assert_in_delta(21.5, val.value, 5.5)
   end
@@ -32,11 +32,11 @@ class FakeSeriesTest < Minitest::Test
     array = FakeSeries.array(365 * 3, Time.now - 1.year, 8.hours, frequency: 0.177, amplitude: 2, min: 18.0, max: 25.0)
     assert array.length == (365 * 3)
   end
-  
+
   def test_creates_a_large_series
     array = FakeSeries.array(24 * 60 * 3, Time.now - 1.year, 1.minute, frequency: 0.077, amplitude: 2, min: 18.0, max: 25.0)
 
-    (array.length - 1).times.each do |i| 
+    (array.length - 1).times.each do |i|
       assert_in_delta(2, array[i], array[i + 1])
     end
   end
@@ -50,7 +50,7 @@ class FakeSeriesTest < Minitest::Test
     data_builder = series.simple_random_walk(amplitude: 1)
     data_builder.in_batches_of(120) do |elt|
       i += 1
-      { time: elt.time, value: elt.value, i: i }
+      { time: elt.time, value: elt.value, i: }
     end.each do |batch|
       batch_iterators << i
       batches << batch

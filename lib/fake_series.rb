@@ -6,7 +6,7 @@ require "securerandom"
 require "forwardable"
 
 # Allows the creation of random series using different
-# algorithims. 
+# algorithims.
 #
 class FakeSeries
   include Enumerable
@@ -22,7 +22,7 @@ class FakeSeries
   }
 
   # Initializes the series
-  # 
+  #
   # steps - The number of steps in the series
   # time - The beginning time
   # duration - The time length of each step
@@ -54,7 +54,7 @@ class FakeSeries
     elements = enumerator.take(steps)
 
     if block_given?
-      elements.each{ |elt| yield elt }
+      elements.each { |elt| yield elt }
     else
       elements
     end
@@ -71,15 +71,13 @@ class FakeSeries
 
     Enumerator.new do |yielder|
       i = 0
-      elements = self.each
+      elements = each
 
       while i < batches
         batch = size.times.inject([]) do |acc, _|
-          begin
-            acc << blk.call(elements.next)
-          rescue StopIteration
-            break acc
-          end
+          acc << blk.call(elements.next)
+        rescue StopIteration
+          break acc
         end
 
         yielder.yield batch
@@ -121,7 +119,7 @@ class FakeSeries
     # be between 25 and 45 with an additional random osciallation
     # of 20.
     def array(steps, time, duration, **args)
-      self.new(steps, time, duration).random_cyclic(**args).values
+      new(steps, time, duration).random_cyclic(**args).values
     end
 
     def types
@@ -140,5 +138,4 @@ class FakeSeries
   def next_element(last_elt)
     last_elt.next(duration)
   end
-
 end

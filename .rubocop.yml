@@ -18,6 +18,9 @@ Layout/EmptyLineAfterGuardClause:
 Layout/LineLength:
   Max: 150
 
+Layout/SpaceAroundOperators:
+  EnforcedStyleForExponentOperator: space
+
 Metrics/AbcSize:
   Max: 50
 
@@ -35,6 +38,9 @@ Metrics/PerceivedComplexity:
 
 Style/Alias:
   EnforcedStyle: prefer_alias
+
+Style/ClassAndModuleChildren:
+  Enabled: false
 
 Style/Documentation:
   Enabled: false

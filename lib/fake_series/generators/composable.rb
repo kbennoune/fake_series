@@ -1,8 +1,7 @@
 module FakeSeries::Generators
   module Composable
-
-    def +(composable)
-      Expression.new(self, composable)
+    def +(other)
+      Expression.new(self, other)
     end
   end
 end

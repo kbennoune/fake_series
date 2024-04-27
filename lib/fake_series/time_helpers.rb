@@ -16,10 +16,10 @@ module FakeSeries::TimeHelpers
       days * 365
     end
 
-    alias minute minutes
-    alias hour hours
-    alias day days
-    alias year years
+    alias_method :minute, :minutes
+    alias_method :hour, :hours
+    alias_method :day, :days
+    alias_method :year, :years
   end
 
   refine Time do
@@ -31,18 +31,18 @@ module FakeSeries::TimeHelpers
       new_min    = options.fetch(:min, options[:hour] ? 0 : min)
       new_sec    = options.fetch(:sec, (options[:hour] || options[:min]) ? 0 : sec)
       new_offset = options.fetch(:offset, nil)
-    
+
       if new_nsec = options[:nsec]
         raise ArgumentError, "Can't change both :nsec and :usec at the same time: #{options.inspect}" if options[:usec]
         new_usec = Rational(new_nsec, 1000)
       else
         new_usec = options.fetch(:usec, (options[:hour] || options[:min] || options[:sec]) ? 0 : Rational(nsec, 1000))
       end
-    
+
       raise ArgumentError, "argument out of range" if new_usec >= 1000000
-    
+
       new_sec += Rational(new_usec, 1000000)
-    
+
       if new_offset
         ::Time.new(new_year, new_month, new_day, new_hour, new_min, new_sec, new_offset)
       elsif utc?

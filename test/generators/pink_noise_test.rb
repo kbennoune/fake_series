@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 module Generators
   class PinkNoiseTest < Minitest::Test
@@ -11,7 +11,7 @@ module Generators
       data = series.to_a
 
       sum_of_differences = data.each_with_index.sum do |elt, i|
-        i.zero? ? 0 : (elt.value - data[i-1].value) ** 2
+        i.zero? ? 0 : (elt.value - data[i - 1].value) ** 2
       end
       sigma = Math.sqrt(sum_of_differences / (data.length - 1))
       # Need to derive this

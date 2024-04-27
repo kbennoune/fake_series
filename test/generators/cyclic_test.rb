@@ -22,7 +22,7 @@ module Generators
     def test_series_varies_sinusoidaly
       time = Time.now
       series = FakeSeries.new(24 * 60, Time.now, 1.minute).cyclic(
-        period: 1.day, 
+        period: 1.day,
         amplitude: 2
       )
 

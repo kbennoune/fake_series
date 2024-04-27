@@ -16,8 +16,8 @@ class FakeSeries::Element
     hidden_variables = generator.hidden_variables(self, duration)
 
     self.class.new(
-      self.time + duration,
-      self.generator,
+      time + duration,
+      generator,
       hidden_variables,
       previous: self
     )

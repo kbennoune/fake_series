@@ -5,7 +5,7 @@ module FakeSeries::Generators
     attr_reader :terms
 
     def initialize(*terms)
-      @terms = terms.map{ |term| [term.object_id, term] }.to_h
+      @terms = terms.map { |term| [term.object_id, term] }.to_h
     end
 
     def hidden_variables(prev, duration)
@@ -30,8 +30,8 @@ module FakeSeries::Generators
     def element_for(elt, k, generator)
       value = (elt.value.respond_to?(:[]) && elt.value[k]) || {}
       FakeSeries::Element.new(
-        elt.time, generator, elt.hidden_variables[k], 
-        value: value
+        elt.time, generator, elt.hidden_variables[k],
+        value:
       )
     end
   end
