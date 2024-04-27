@@ -23,6 +23,7 @@ Or install it yourself as:
 ## Usage
 
 ### Simple Series
+```ruby
 number_of_steps = (1.year / 1.minute)
 start_date = (Time.now - number_of_steps.minutes)
 step_length = 1.minute
@@ -33,22 +34,23 @@ series = FakeSeries.new(number_of_steps, start_date, step_length, initial)
 series.simple_random_walk(amplitude: 10).each do |step|
   puts [step.time.strftime("%D %H:%M:%S"), step.value].join("\t")
 end
+```
 
 The following generators are available
-* cyclic
+* **cyclic**
     amplitude: Numeric
     period: Numeric (number of seconds to complete the cycle)
-* random_cyclic 
+* **random_cyclic**
     frequency: Numeric
     amplitude: Numeric
     min: Numeric
     max: Numeric
     peakhour: Numeric(0..23)
-* simple_random_walk
+* **simple_random_walk**
     amplitude: Numeric
-* gaussian_random_walk
+* **gaussian_random_walk**
     std_deviation: Numeric
-* pink_noise
+* **pink_noise**
     max_scale: Integer (lowest subfrequency added)
     amplitude: Numeric
     offset: Integer (Which subfrequency one is on)
@@ -57,10 +59,12 @@ The following generators are available
 ### Expressions
 You can create a series that's the sum of two other series
 
+```ruby
 number_of_steps = (1.week / 1.minute)
 start_date = (Time.now - number_of_steps.minutes)
 step_length = 1.minute
 initial = 0
+
 
 series = FakeSeries.new(number_of_steps, start_date, step_length, initial)
 
@@ -77,6 +81,7 @@ generator = FakeSeries::Generators::PinkNoise.new(
 series.with_generator(generator).each do |step|
   puts [step.time.strftime("%D %H:%M:%S"), step.value].join("\t")
 end
+```
 
 ## Development
 
