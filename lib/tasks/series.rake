@@ -1,23 +1,22 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __dir__)
 require "fake_series"
-require 'optparse'
-require 'json'
-require 'fake_series'
-require 'time'
+require "optparse"
+require "json"
+require "time"
 
 namespace :series do
   namespace :generate do
     task :file do
       opts = parse_options(filename: "-f")
-    
+
       filename = opts[:filename]
       series_spec = JSON.parse(opts[:series])
       series = series_spec.keys[0] if FakeSeries.types.include?(:"#{series_spec.keys[0]}")
-      series_args = Hash[series_spec.values[0].map{|k,v| [k.to_sym, v]}]
+      series_args = Hash[series_spec.values[0].map { |k, v| [k.to_sym, v] }]
       time = Time.parse(opts[:time])
       steps = opts[:steps]
       duration = opts[:duration]
-      initial = opts[:initial] 
+      initial = opts[:initial]
 
       if [filename, series, series_args, steps, time, duration, initial].any?(&:nil?)
         raise OptionParser::MissingArgument, "there is a missing command line argument"
@@ -30,8 +29,6 @@ namespace :series do
           file.puts [elt.time.strftime("%D %H:%M:%S"), elt.value].join("\t")
         end
       end
-
-
     end
   end
 end
@@ -49,9 +46,9 @@ def parse_options(additional_flags = {})
   options = {}
   parser = OptionParser.new do |opts|
     opts.banner = "Usage: rake add [options]"
-    
+
     flags.each do |flag, (short, type)|
-      opts.on(short, "--#{flag.to_s}=ARG", type || String) { |val| options[flag] = val}
+      opts.on(short, "--#{flag}=ARG", type || String) { |val| options[flag] = val }
     end
   end
 

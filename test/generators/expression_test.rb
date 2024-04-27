@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 module Generators
   class ExpressionTest < Minitest::Test
@@ -9,9 +9,9 @@ module Generators
       series = FakeSeries.new(1 * 24 * 60, time, 1.minute)
 
       generator = FakeSeries::Generators::PinkNoise.new(
-                    max_scale: 25,
-                    amplitude: 1
-                  ) +
+        max_scale: 25,
+        amplitude: 1
+      ) +
                   FakeSeries::Generators::Cyclic.new(
                     period: 1.day,
                     amplitude: 20
@@ -21,11 +21,11 @@ module Generators
         if i.zero?
           0
         else
-          theta1 = 2 * Math::PI * ((data[i-1].time - time).to_f / 24.hours)
+          theta1 = 2 * Math::PI * ((data[i - 1].time - time).to_f / 24.hours)
           theta2 = 2 * Math::PI * ((elt.time - time).to_f / 24.hours)
           periodic_difference = 2 * (Math.sin(theta2) - Math.sin(theta1))
 
-          (elt.value.to_f - data[i-1].value.to_f - periodic_difference)**2
+          (elt.value.to_f - data[i - 1].value.to_f - periodic_difference) ** 2
         end
       end
       sigma = Math.sqrt(sum_of_differences / (data.length - 1))

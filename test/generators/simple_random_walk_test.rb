@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 module Generators
   class SimpleRandomWalkTest < Minitest::Test
@@ -9,7 +9,7 @@ module Generators
 
       assert series.respond_to?(:simple_random_walk)
       assert series.methods.include?(:simple_random_walk)
-    end 
+    end
 
     def test_a_simple_random_walk
       last_year = Time.now
@@ -21,7 +21,7 @@ module Generators
         if i == 0
           assert elt.value == 10
         else
-          step_difference = data[i-1].value - elt.value
+          step_difference = data[i - 1].value - elt.value
           assert_equal step_difference.abs, 1
         end
       end

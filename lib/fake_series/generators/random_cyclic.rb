@@ -14,7 +14,7 @@ class FakeSeries
         @peakhour = peakhour
       end
 
-      def value(prev, elt)
+      def value(_prev, elt)
         current_phase = elt.hidden_variables[:phase]
         time = elt.time
         (base_value(time) + random_variation(current_phase))
@@ -40,11 +40,11 @@ class FakeSeries
         random_phase = SecureRandom.rand(2 * frequency)
         (previous_phase + random_phase) % 2.0
       end
-    
+
       def base_value(time)
         maxvalue - (value_slope * difference(time))
       end
-    
+
       # At the moment all of the values peak at 5pm
       # and are lowest at 5am.
       def peaktime(time)
@@ -60,7 +60,7 @@ class FakeSeries
       def difference(time)
         (time - peaktime(time)).abs
       end
-    
+
       def value_slope
         (maxvalue - minvalue) / (12.0 * 60.0 * 60.0)
       end

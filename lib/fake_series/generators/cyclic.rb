@@ -5,7 +5,7 @@ class FakeSeries
     class Cyclic
       include FakeSeries::Generators::Composable
       using FakeSeries::TimeHelpers
-      
+
       attr_reader :period, :amplitude
 
       def initialize(period:, amplitude:)
@@ -13,7 +13,7 @@ class FakeSeries
         @amplitude = amplitude
       end
 
-      def value(prev, elt)
+      def value(_prev, elt)
         amplitude * Math.sin(elt.hidden_variables[:phase])
       end
 
@@ -21,7 +21,7 @@ class FakeSeries
         previous_phase = previous.hidden_variables[:phase].to_f
 
         {
-          phase: previous_phase + (2 * Math::PI * (duration.to_f/period))
+          phase: previous_phase + (2 * Math::PI * (duration.to_f / period))
         }
       end
     end

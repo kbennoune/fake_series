@@ -7,11 +7,11 @@ module Generators
     def test_random_gaussian_distribution
       generator = FakeSeries::Generators::GaussianRandomWalk.new(std_deviation: 1)
 
-      data = 1000.times.map{
+      data = 1000.times.map do
         generator.random_normal
-      }
+      end
       avg = (data.sum / data.length)
-      variance = data.sum{ |x| (x - avg)**2 } / data.length
+      variance = data.sum { |x| (x - avg) ** 2 } / data.length
       sigma = Math.sqrt(variance)
       assert_in_delta(avg, 0, 0.1)
       assert_in_delta(sigma, 1, 0.1)
@@ -25,7 +25,7 @@ module Generators
       data = series.gaussian_random_walk(std_deviation: 10).to_a
 
       sum_of_differences = data.each_with_index.sum do |elt, i|
-        i.zero? ? 0 : (elt.value - data[i-1].value) ** 2
+        i.zero? ? 0 : (elt.value - data[i - 1].value) ** 2
       end
 
       sigma = Math.sqrt(sum_of_differences / (data.length - 1))

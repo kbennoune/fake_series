@@ -4,14 +4,14 @@ module FakeSeries::Generators
   class GaussianRandomWalk
     include FakeSeries::Generators::Composable
     using FakeSeries::TimeHelpers
-    
+
     attr_reader :std_deviation
 
     def initialize(std_deviation:)
       @std_deviation = std_deviation.to_f
     end
 
-    def value(prev, elt)
+    def value(prev, _elt)
       prev.value + std_deviation * random_change
     end
 
